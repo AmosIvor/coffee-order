@@ -48,10 +48,17 @@
           />
         </div>
         <div class="customer-item customer-table">
-          <label for="table-number" class="customer-label"
+          <label
+            for="table-number"
+            class="customer-label"
+            id="customer-table-id"
             >Table number:
           </label>
-          <select name="table-number" id="table-list"></select>
+          <select name="table-number" id="table-list">
+            <option value="" selected disabled hidden class="default-select">
+              Table number
+            </option>
+          </select>
         </div>
         <div class="customer-item customer-note">
           <label for="note" class="customer-label">Note: </label>
@@ -76,22 +83,7 @@
       <!-- Modal content -->
       <form class="modal-content">
         <div class="modal-title">Choose size and quantity</div>
-        <div class="modal-list-size">
-          <!-- <div class="modal-size modal-M">
-            <button class="modal-size-active" type="button">Size M</button>
-            <span>33000đ</span>
-          </div>
-
-          <div class="modal-size modal-L">
-            <button class="modal-size-active" type="button">Size L</button>
-            <span>33000đ</span>
-          </div>
-
-          <div class="modal-size modal-XL">
-            <button type="button">Size XL</button>
-            <span>33000đ</span>
-          </div> -->
-        </div>
+        <div class="modal-list-size"></div>
         <div class="modal-quantity">
           <div>
             <span>Enter number of</span>
@@ -99,6 +91,26 @@
             <span>:</span>
           </div>
           <input type="number" value="1" min="1" id="modal-quantity-input" />
+        </div>
+        <div class="modal-topping">
+          <fieldset id="group-topping">
+            <legend>Select topping</legend>
+            <!-- <div class="modal-topping-list"></div> -->
+            <!-- <div class="topping-item">
+              <input type="checkbox" id="topping-item-1" />
+              <label for="topping-item-1">Topping 1</label>
+            </div>
+
+            <div class="topping-item">
+              <input type="checkbox" id="topping-item-1" />
+              <label for="topping-item-1">Topping 1</label>
+            </div>
+
+            <div class="topping-item">
+              <input type="checkbox" id="topping-item-1" />
+              <label for="topping-item-1">Topping 1</label>
+            </div> -->
+          </fieldset>
         </div>
 
         <div class="modal-button">

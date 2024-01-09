@@ -19,10 +19,13 @@ let tableList = document.getElementById("table-list");
 let customerInput = document.getElementById("customer-input");
 let customerNote = document.getElementById("customer-note");
 let cartForm = document.querySelector(".cart");
+let groupTopping = document.getElementById("group-topping");
+// let checkboxes = document.querySelectorAll('fieldset input[type="checkbox"]');
 
 let currentKey = null;
 let tables = null;
 let products = null;
+let toppings = null;
 
 openShopping.addEventListener("click", () => {
   body.classList.add("active");
@@ -33,15 +36,13 @@ closeShopping.addEventListener("click", () => {
 
 closeModal.addEventListener("click", (event) => {
   event.preventDefault();
-  modal.style.display = "none";
-  modalListSize.replaceChildren();
-
-  modalLabelQuantity.textContent = "";
+  cancelModal();
 });
 
 window.addEventListener("click", (event) => {
   if (event.target === modal) {
     modal.style.display = "none";
+    cancelModal();
   }
 });
 
@@ -55,13 +56,19 @@ cartForm.addEventListener("submit", (event) => {
 
 // get data from file json
 
-fetch("tables.json")
+fetch("data/tables.json")
   .then((response) => response.json())
   .then((data) => {
     tables = data;
   });
 
-fetch("product.json")
+fetch("data/toppings.json")
+  .then((response) => response.json())
+  .then((data) => {
+    toppings = data;
+  });
+
+fetch("data/product.json")
   .then((response) => response.json())
   .then((data) => {
     products = data;
@@ -96,6 +103,7 @@ function initApp() {
 function addToCart(key) {
   const value = products[key];
   loadSizeAndInput(value);
+  loadToppings();
   modal.style.display = "block";
 
   currentKey = key;
@@ -108,13 +116,30 @@ const submitHandler = (event, key) => {
   let currentSize = modalLabelQuantity.textContent;
   currentSize = currentSize.replace("Size ", "size");
 
+  if (!currentSize) {
+    alert("Please choose size");
+    return;
+  }
+
+  let checkboxes = document.querySelectorAll('fieldset input[type="checkbox"]');
+  console.log(checkboxes.length);
+  let checkedValues = [];
+  let extraPrice = 0;
+  for (const checkbox of checkboxes) {
+    if (checkbox.checked) {
+      checkedValues.push(toppings[checkbox.value].name);
+      extraPrice += toppings[checkbox.value].price;
+    }
+  }
+
   const cartItem = {
     id: key,
     name: value.name,
     image: value.image,
     [currentSize]: value[currentSize],
-    price: value[currentSize],
+    price: value[currentSize] + extraPrice,
     size: modalLabelQuantity.textContent,
+    toppings: checkedValues,
     quantity: Number(modalQuantityInput.value),
   };
   console.log("cart item: ", cartItem);
@@ -143,6 +168,9 @@ const submitHandler = (event, key) => {
     0
   );
   modalQuantityInput.value = 1;
+  modalLabelQuantity.textContent = "";
+
+  resetTopping();
 
   modalListSize.replaceChildren();
   reloadCard();
@@ -200,11 +228,32 @@ function loadSizeAndInput(value) {
   });
 }
 
+function loadToppings() {
+  toppings.forEach((item, index) => {
+    let newDiv = document.createElement("div");
+    newDiv.classList.add("topping-item");
+
+    newDiv.innerHTML = `
+        <input type="checkbox" class="modal-checkbox" id="topping-item-${index}" value='${index}' />
+        <label for="topping-item-${index}">${item.name}</label>
+    `;
+    groupTopping.appendChild(newDiv);
+  });
+}
+
+function resetTopping() {
+  groupTopping.replaceChildren();
+  let newLegend = document.createElement("legend");
+  newLegend.textContent = "Select topping";
+  groupTopping.appendChild(newLegend);
+}
+
 function reloadCard() {
   listCard.innerHTML = "";
   let count = 0;
   let totalPrice = 0;
   listCards.forEach((value, key) => {
+    console.log("value: ", value);
     totalPrice = totalPrice + value.price;
     count = count + value.quantity;
     if (value != null) {
@@ -215,7 +264,7 @@ function reloadCard() {
                 </div>
                 <div class="item-name">${value.name}</div>
                 <div class="item-price">
-                  <div>${value.price.toLocaleString()}</div>
+                  <div>${value.price.toLocaleString()}đ</div>
                   <div>${value.size}</div>
                 </div>
                 <div class="item-button">
@@ -226,7 +275,9 @@ function reloadCard() {
                     <button onclick="changeQuantity(${key}, ${
         value.quantity + 1
       })">+</button>
-                </div>`;
+                </div>
+                <div class="item-topping">${value.toppings.join(", ")}</div>
+                `;
       listCard.appendChild(newDiv);
     }
   });
@@ -234,6 +285,8 @@ function reloadCard() {
   quantity.innerText = count;
 
   total.innerText = `Order (${count})`;
+
+  checkboxes.replaceChildren();
 }
 
 function changeQuantity(key, quantity) {
@@ -244,6 +297,13 @@ function changeQuantity(key, quantity) {
     listCards[key].price = quantity * products[key].price;
   }
   reloadCard();
+}
+
+function cancelModal() {
+  modal.style.display = "none";
+  modalListSize.replaceChildren();
+  resetTopping();
+  modalLabelQuantity.textContent = "";
 }
 
 function submitCart(event) {
@@ -258,7 +318,7 @@ function submitCart(event) {
   console.log("data submit", dataSubmit);
 
   customerInput.value = "";
-  tableList.value = 1;
+  tableList.value = "";
   customerNote.value = "";
   listCards = [];
   reloadCard();

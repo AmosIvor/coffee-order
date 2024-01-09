@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Tran chau den",
+    "price": 12000
+  },
+  {
+    "id": 2,
+    "name": "Tran chau trang",
+    "price": 12000
+  },
+  {
+    "id": 3,
+    "name": "Tran chau xam",
+    "price": 12000
+  },
+  {
+    "id": 4,
+    "name": "Tran chau dac",
+    "price": 12000
+  }
+]
