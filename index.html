@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ORDER HVPP</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="">
+    <div class="container">
+      <header>
+        <h1>HVPP MENU</h1>
+        <button class="shopping">
+          <img src="image/shopping.svg" />
+          <span class="quantity">0</span>
+        </button>
+      </header>
+
+      <div class="list"></div>
+    </div>
+    <form class="cart">
+      <h1>My Cart</h1>
+      <ul class="listCart"></ul>
+      <div class="lineTotal"></div>
+      <div class="totalCart">
+        <span>Total Bill: </span>
+        <div>
+          <span class="totalBill">0 </span>
+          <span>đ</span>
+        </div>
+      </div>
+
+      <div class="customer-container">
+        <div class="customer-item customer-name">
+          <label for="name-customer" class="customer-label">Customer: </label>
+          <input
+            id="customer-input"
+            name="name-customer"
+            type="text"
+            placeholder="Name Customer"
+          />
+        </div>
+        <div class="customer-item customer-table">
+          <label for="table-number" class="customer-label"
+            >Table number:
+          </label>
+          <select name="table-number" id="table-list"></select>
+        </div>
+        <div class="customer-item customer-note">
+          <label for="note" class="customer-label">Note: </label>
+          <textarea
+            id="customer-note"
+            name="note"
+            rows="4"
+            cols="10"
+            placeholder="Note"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="checkOut">
+        <button class="total" type="submit">Order</button>
+        <div class="closeShopping">Close</div>
+      </div>
+    </form>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <form class="modal-content">
+        <div class="modal-title">Choose size and quantity</div>
+        <div class="modal-list-size">
+          <!-- <div class="modal-size modal-M">
+            <button class="modal-size-active" type="button">Size M</button>
+            <span>33000đ</span>
+          </div>
+
+          <div class="modal-size modal-L">
+            <button class="modal-size-active" type="button">Size L</button>
+            <span>33000đ</span>
+          </div>
+
+          <div class="modal-size modal-XL">
+            <button type="button">Size XL</button>
+            <span>33000đ</span>
+          </div> -->
+        </div>
+        <div class="modal-quantity">
+          <div>
+            <span>Enter number of</span>
+            <span class="modal-label-size"></span>
+            <span>:</span>
+          </div>
+          <input type="number" value="1" min="1" id="modal-quantity-input" />
+        </div>
+
+        <div class="modal-button">
+          <button class="modal-cancel">Cancel</button>
+          <button class="modal-submit" type="submit">Add To Cart</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
